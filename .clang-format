@@ -1,0 +1,6 @@
+BasedOnStyle: Google
+AllowShortIfStatementsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortLoopsOnASingleLine: false
+IndentWidth: 4
+Standard: c++17
