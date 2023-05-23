@@ -1,11 +1,11 @@
 #include "packet/header/wlan_header.hpp"
 
 void *WlanHeader::get_raw() {
-    return (void *)raw;
+    return (void *)this->raw;
 }
 
-void WlanHeader::set_raw(void *raw) {
-    this->raw = (struct wlan_header *)raw;
+void WlanHeader::set_raw(void *raw_data) {
+    this->raw = (struct wlan_header *)raw_data;
 }
 
 void WlanHeader::print_header(FILE *out) {
@@ -46,10 +46,10 @@ std::string WlanHeader::get_tx_mac() {
 
 void WlanHeader::gen_bit_vec_header(std::vector<std::string> &to_fill) {
     std::vector<std::tuple<std::string, uint32_t>> v;
-    v.push_back(std::make_tuple("wlan_type", 1 * 8));
-    v.push_back(std::make_tuple("wlan_flag", 1 * 8));
-    v.push_back(std::make_tuple("wlan_duration", 2 * 8));
-    v.push_back(std::make_tuple("wlan_rx_addr", 6 * 8));
+    v.emplace_back("wlan_type", 1 * 8);
+    v.emplace_back("wlan_flag", 1 * 8);
+    v.emplace_back("wlan_duration", 2 * 8);
+    v.emplace_back("wlan_rx_addr", 6 * 8);
 
     PacketHeader::make_bitstring_header(v, to_fill);
 }

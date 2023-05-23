@@ -1,11 +1,11 @@
 #include "packet/header/udp_header.hpp"
 
 void *UDPHeader::get_raw() {
-    return (void *)raw;
+    return (void *)this->raw;
 }
 
-void UDPHeader::set_raw(void *raw) {
-    this->raw = (struct udphdr *)raw;
+void UDPHeader::set_raw(void *raw_data) {
+    this->raw = (struct udphdr *)raw_data;
 }
 
 void UDPHeader::print_header(FILE *out) {
@@ -29,10 +29,10 @@ void UDPHeader::fill_bit_vec(std::vector<int8_t> &to_fill, int8_t fill_with) {
 
 void UDPHeader::gen_bit_vec_header(std::vector<std::string> &to_fill) {
     std::vector<std::tuple<std::string, uint32_t>> v;
-    v.push_back(std::make_tuple("udp_sport", 16));
-    v.push_back(std::make_tuple("udp_dport", 16));
-    v.push_back(std::make_tuple("udp_len", 16));
-    v.push_back(std::make_tuple("udp_cksum", 16));
+    v.emplace_back("udp_sport", 16);
+    v.emplace_back("udp_dport", 16);
+    v.emplace_back("udp_len", 16);
+    v.emplace_back("udp_cksum", 16);
 
     PacketHeader::make_bitstring_header(v, to_fill);
 }

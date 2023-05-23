@@ -127,7 +127,7 @@ payload payload_bit n
 ################################################################################)""";
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
-    Config *arguments = (Config *)state->input;
+    auto arguments = (Config *)state->input;
     switch (key) {
         case 'h':
             printf("%s\n", filter_help);
@@ -239,7 +239,7 @@ int main(int argc, char **argv) {
          * default to live than specify */
         config.live_capture = 1;
         pcap_parser = new PCAPParser();
-        pcap_parser->set_filewriter(fw);
+        pcap_parser->set_fileWriter(fw);
         pcap_parser->set_conf(config);
         pcap_parser->process_file();
         if (config.stats == 1) {
@@ -254,7 +254,7 @@ int main(int argc, char **argv) {
             exit(1);
         } else if (config.pcap == 1) {
             pcap_parser = new PCAPParser();
-            pcap_parser->set_filewriter(fw);
+            pcap_parser->set_fileWriter(fw);
             pcap_parser->set_conf(config);
             pcap_parser->process_file();
             if (config.stats == 1) {
@@ -263,7 +263,7 @@ int main(int argc, char **argv) {
             delete pcap_parser;
         } else if (config.csv == 1) {
             stringfile_parser = new StringFileParser();
-            stringfile_parser->set_filewriter(fw);
+            stringfile_parser->set_fileWriter(fw);
             stringfile_parser->set_conf(config);
             stringfile_parser->process_file();
             if (config.stats == 1) {

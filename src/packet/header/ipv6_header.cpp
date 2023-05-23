@@ -1,11 +1,11 @@
 #include "packet/header/ipv6_header.hpp"
 
 void *IPv6Header::get_raw() {
-    return (void *)raw;
+    return (void *)this->raw;
 }
 
-void IPv6Header::set_raw(void *raw) {
-    this->raw = (struct ip6_hdr *)raw;
+void IPv6Header::set_raw(void *raw_data) {
+    this->raw = (struct ip6_hdr *)raw_data;
 }
 
 void IPv6Header::print_header(FILE *out) {
@@ -19,14 +19,14 @@ std::string IPv6Header::get_src_ip() {
     char s[INET6_ADDRSTRLEN];
     inet_ntop(AF_INET6, (void *)&raw->ip6_src, s, INET6_ADDRSTRLEN);
 
-    return std::string(s);
+    return {s};
 }
 
 std::string IPv6Header::get_dst_ip() {
     char s[INET6_ADDRSTRLEN];
     inet_ntop(AF_INET6, (void *)&raw->ip6_dst, s, INET6_ADDRSTRLEN);
 
-    return std::string(s);
+    return {s};
 }
 
 void IPv6Header::fill_bit_vec(std::vector<int8_t> &to_fill, int8_t fill_with) {
@@ -40,14 +40,14 @@ void IPv6Header::fill_bit_vec(std::vector<int8_t> &to_fill, int8_t fill_with) {
 
 void IPv6Header::gen_bit_vec_header(std::vector<std::string> &to_fill) {
     std::vector<std::tuple<std::string, uint32_t>> v;
-    v.push_back(std::make_tuple("ipv6_ver", 4));
-    v.push_back(std::make_tuple("ipv6_tc", 8));
-    v.push_back(std::make_tuple("ipv6_fl", 20));
-    v.push_back(std::make_tuple("ipv6_len", 16));
-    v.push_back(std::make_tuple("ipv6_nh", 8));
-    v.push_back(std::make_tuple("ipv6_hl", 8));
-    v.push_back(std::make_tuple("ipv6_src", 128));
-    v.push_back(std::make_tuple("ipv6_dst", 128));
+    v.emplace_back("ipv6_ver", 4);
+    v.emplace_back("ipv6_tc", 8);
+    v.emplace_back("ipv6_fl", 20);
+    v.emplace_back("ipv6_len", 16);
+    v.emplace_back("ipv6_nh", 8);
+    v.emplace_back("ipv6_hl", 8);
+    v.emplace_back("ipv6_src", 128);
+    v.emplace_back("ipv6_dst", 128);
 
     PacketHeader::make_bitstring_header(v, to_fill);
 }

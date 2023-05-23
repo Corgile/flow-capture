@@ -11,7 +11,7 @@ class UDPHeader : public PacketHeader {
    public:
     /* Required Functions */
     void *get_raw() override;
-    void set_raw(void *raw) override;
+    void set_raw(void *raw_data) override;
     void print_header(FILE *out) override;
     uint32_t header_len() override;
     std::string get_port(bool src);

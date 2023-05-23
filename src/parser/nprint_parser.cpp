@@ -47,12 +47,12 @@ std::string NprintParser::clean_line(std::string &line) {
     first_column = true;
     neg = false;
     for (i = 0; i < line.length(); i++) {
-        if (line[i] == ',' && first_column == true)
+        if (line[i] == ',' && first_column)
             first_column = false;
         if (line[i] == '-')
             neg = true;
-        if ((line[i] == '0' || line[i] == '1') && first_column == false) {
-            if (neg == true) {
+        if ((line[i] == '0' || line[i] == '1') && !first_column) {
+            if (neg) {
                 neg = false;
             } else {
                 packet_bits.push_back(line[i]);
@@ -112,5 +112,4 @@ uint8_t *NprintParser::transform_bitstring(std::string &bits) {
 }
 
 void NprintParser::format_and_write_header() {
-    return;
 }

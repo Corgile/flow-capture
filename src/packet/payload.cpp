@@ -1,11 +1,11 @@
 #include "packet/payload.hpp"
 
 void *Payload::get_raw() {
-    return raw;
+    return this->raw;
 }
 
-void Payload::set_raw(void *raw) {
-    this->raw = raw;
+void Payload::set_raw(void *raw_data) {
+    this->raw = raw_data;
 }
 
 void Payload::print_header(FILE *out) {

@@ -27,9 +27,9 @@
 
 class FileWriter {
    public:
-    void set_conf(Config c);
+    void set_conf(const Config& c);
     void write_header(std::vector<std::string> header);
-    void write_csv_stringvec(std::vector<std::string> &v);
+    void write_csv_bit_vec(std::vector<std::string> &v);
     void write_bitstring_line(std::vector<std::string> &prefix,
                               std::vector<int8_t> &bistring_vec);
 

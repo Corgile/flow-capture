@@ -31,9 +31,9 @@ class FileParser {
     virtual void format_and_write_header() = 0;
     void print_stats();
     void set_conf(Config c);
-    void set_filewriter(FileWriter *fw);
+    void set_fileWriter(FileWriter *writer);
     SuperPacket *process_packet(void *pkt);
-    void tokenize_line(std::string line, std::vector<std::string> &to_fill,
+    static void tokenize_line(const std::string& line, std::vector<std::string> &to_fill,
                        char delimiter = ',');
 
    protected:

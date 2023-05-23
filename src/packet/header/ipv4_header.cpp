@@ -1,11 +1,11 @@
 #include "packet/header/ipv4_header.hpp"
 
 void *IPv4Header::get_raw() {
-    return (void *)raw;
+    return (void *)this->raw;
 }
 
-void IPv4Header::set_raw(void *raw) {
-    this->raw = (struct ip *)raw;
+void IPv4Header::set_raw(void *raw_data) {
+    this->raw = (struct ip *)raw_data;
 }
 
 void IPv4Header::print_header(FILE *out) {
@@ -38,21 +38,21 @@ void IPv4Header::fill_bit_vec(std::vector<int8_t> &to_fill, int8_t fill_with) {
 
 void IPv4Header::gen_bit_vec_header(std::vector<std::string> &to_fill) {
     std::vector<std::tuple<std::string, uint32_t>> v;
-    v.push_back(std::make_tuple("ipv4_ver", 4));
-    v.push_back(std::make_tuple("ipv4_hl", 4));
-    v.push_back(std::make_tuple("ipv4_tos", 8));
-    v.push_back(std::make_tuple("ipv4_tl", 16));
-    v.push_back(std::make_tuple("ipv4_id", 16));
-    v.push_back(std::make_tuple("ipv4_rbit", 1));
-    v.push_back(std::make_tuple("ipv4_dfbit", 1));
-    v.push_back(std::make_tuple("ipv4_mfbit", 1));
-    v.push_back(std::make_tuple("ipv4_foff", 13));
-    v.push_back(std::make_tuple("ipv4_ttl", 8));
-    v.push_back(std::make_tuple("ipv4_proto", 8));
-    v.push_back(std::make_tuple("ipv4_cksum", 16));
-    v.push_back(std::make_tuple("ipv4_src", 32));
-    v.push_back(std::make_tuple("ipv4_dst", 32));
-    v.push_back(std::make_tuple("ipv4_opt", 320));
+    v.emplace_back("ipv4_ver", 4);
+    v.emplace_back("ipv4_hl", 4);
+    v.emplace_back("ipv4_tos", 8);
+    v.emplace_back("ipv4_tl", 16);
+    v.emplace_back("ipv4_id", 16);
+    v.emplace_back("ipv4_rbit", 1);
+    v.emplace_back("ipv4_dfbit", 1);
+    v.emplace_back("ipv4_mfbit", 1);
+    v.emplace_back("ipv4_foff", 13);
+    v.emplace_back("ipv4_ttl", 8);
+    v.emplace_back("ipv4_proto", 8);
+    v.emplace_back("ipv4_cksum", 16);
+    v.emplace_back("ipv4_src", 32);
+    v.emplace_back("ipv4_dst", 32);
+    v.emplace_back("ipv4_opt", 320);
 
     PacketHeader::make_bitstring_header(v, to_fill);
 }
@@ -60,10 +60,10 @@ void IPv4Header::gen_bit_vec_header(std::vector<std::string> &to_fill) {
 /* Header Specific */
 
 std::string IPv4Header::get_src_ip() {
-    return std::string(inet_ntoa(raw->ip_src));
+    return inet_ntoa(raw->ip_src);
 }
 std::string IPv4Header::get_dst_ip() {
-    return std::string(inet_ntoa(raw->ip_dst));
+    return inet_ntoa(raw->ip_dst);
 }
 uint8_t IPv4Header::get_ip_proto() {
     return raw->ip_p;

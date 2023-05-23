@@ -24,37 +24,33 @@ SuperPacket::SuperPacket(void *pkt, uint32_t max_payload_len,
 
     parseable = true;
 
-    switch (link_type) {
-        case DLT_IEEE802_11_RADIO:
-            radiotaph = (struct radiotap_header *)pkt;
-            radiotap_header.set_raw(radiotaph);
+    if (link_type == DLT_IEEE802_11_RADIO) {
+        radiotaph = (struct radiotap_header *)pkt;
+        radiotap_header.set_raw(radiotaph);
 
-            wlanh = (struct wlan_header *)((u_char *)radiotaph +
-                                           radiotap_header.header_len());
-            wlan_header.set_raw(wlanh);
-            break;
+        wlanh = (struct wlan_header *)((u_char *)radiotaph +
+                                       radiotap_header.header_len());
+        wlan_header.set_raw(wlanh);
+    } else {
+        this->max_payload_len = max_payload_len;
+        eth = (struct ether_header *)pkt;
 
-        default:
-            this->max_payload_len = max_payload_len;
-            eth = (struct ether_header *)pkt;
+        /* Check if packet has an ethernet header */
+        if ((ntohs(eth->ether_type) == ETHERTYPE_IP) ||
+            ((ntohs(eth->ether_type) == ETHERTYPE_IPV6))) {
+            ethernet_header.set_raw(eth);
+            ipv4h = (struct ip *)&eth[1];
+        } else {
+            ipv4h = (struct ip *)pkt;
+        }
 
-            /* Check if packet has an ethernet header */
-            if ((ntohs(eth->ether_type) == ETHERTYPE_IP) ||
-                ((ntohs(eth->ether_type) == 0x86DD))) {
-                ethernet_header.set_raw(eth);
-                ipv4h = (struct ip *)&eth[1];
-            } else {
-                ipv4h = (struct ip *)pkt;
-            }
-
-            if (ipv4h->ip_v == 4) {
-                parseable = process_v4((void *)ipv4h);
-            } else if (ipv4h->ip_v == 6) {
-                parseable = process_v6((void *)ipv4h);
-            } else {
-                parseable = false;
-            }
-            break;
+        if (ipv4h->ip_v == 4) {
+            parseable = process_v4((void *)ipv4h);
+        } else if (ipv4h->ip_v == 6) {
+            parseable = process_v6((void *)ipv4h);
+        } else {
+            parseable = false;
+        }
     }
 }
 
@@ -65,9 +61,6 @@ bool SuperPacket::process_v4(void *pkt) {
     struct icmp *icmph;
     void *pload;
     uint32_t pload_len;
-
-    pload = nullptr;
-    pload_len = 0;
 
     ipv4h = (struct ip *)pkt;
     ipv4_header.set_raw(ipv4h);
@@ -105,9 +98,6 @@ bool SuperPacket::process_v6(void *pkt) {
     struct icmp *icmph;
     void *pload;
     uint32_t pload_len;
-
-    pload = nullptr;
-    pload_len = 0;
 
     ipv6h = (struct ip6_hdr *)pkt;
     ipv6_header.set_raw(pkt);

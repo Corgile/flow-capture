@@ -80,8 +80,9 @@ int StringFileParser::hex_value(char hex_digit) {
         case 'e':
         case 'f':
             return hex_digit - 'a' + 10;
+        default:
+            throw std::invalid_argument("invalid hex digit");
     }
-    throw std::invalid_argument("invalid hex digit");
 }
 
 void StringFileParser::format_and_write_header() {

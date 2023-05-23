@@ -17,9 +17,9 @@ class StringFileParser : public FileParser {
 
    private:
     uint32_t num_cols;
-    int hex_value(char hex_digit);
+    static int hex_value(char hex_digit);
     void format_custom_output(std::vector<std::string> &tokens);
-    std::string hex_to_string(std::string input);
+    static std::string hex_to_string(std::string input);
 };
 
 #endif

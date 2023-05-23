@@ -12,7 +12,7 @@ class TCPHeader : public PacketHeader {
     /* Required Functions */
     std::string get_port(bool src);
     void *get_raw() override;
-    void set_raw(void *raw) override;
+    void set_raw(void *raw_data) override;
     void print_header(FILE *out) override;
     uint32_t header_len() override;
     void fill_bit_vec(std::vector<int8_t> &to_fill, int8_t fill_with) override;

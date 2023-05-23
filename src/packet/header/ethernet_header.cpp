@@ -1,11 +1,11 @@
 #include "packet/header/ethernet_header.hpp"
 
 void *EthHeader::get_raw() {
-    return (void *)raw;
+    return (void *)this->raw;
 }
 
-void EthHeader::set_raw(void *raw) {
-    this->raw = (struct ether_header *)raw;
+void EthHeader::set_raw(void *raw_data) {
+    this->raw = (struct ether_header *)raw_data;
 }
 
 void EthHeader::print_header(FILE *out) {

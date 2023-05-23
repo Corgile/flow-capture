@@ -1,6 +1,8 @@
 #include "parser/file_writer.hpp"
 
-void FileWriter::set_conf(Config c) {
+#include <utility>
+
+void FileWriter::set_conf(const Config& c) {
     this->config = c;
     if (c.outfile == nullptr) {
         this->outfile = stdout;
@@ -49,8 +51,8 @@ void FileWriter::write_header(std::vector<std::string> header) {
 
     std::vector<std::string> compressed_header;
 
-    compressed_header = build_bitstring_header(header);
-    write_csv_stringvec(compressed_header);
+    compressed_header = build_bitstring_header(std::move(header));
+    write_csv_bit_vec(compressed_header);
 }
 
 std::vector<std::string> FileWriter::build_bitstring_header(
@@ -111,7 +113,7 @@ std::vector<std::string> FileWriter::build_bitstring_header(
     return compressed_header;
 }
 
-void FileWriter::write_csv_stringvec(std::vector<std::string> &v) {
+void FileWriter::write_csv_bit_vec(std::vector<std::string> &v) {
     uint32_t i;
 
     for (i = 0; i < v.size(); i++) {
@@ -127,7 +129,7 @@ void FileWriter::write_bitstring_line(std::vector<std::string> &prefix,
     uint32_t i;
 
     for (i = 0; i < prefix.size(); i++) {
-        if (keep_indexes.size() == 0) {
+        if (keep_indexes.empty()) {
             fprintf(outfile, "%s", prefix[i].c_str());
         } else {
             fprintf(outfile, "%s,", prefix[i].c_str());

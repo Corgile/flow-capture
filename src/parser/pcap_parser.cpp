@@ -3,10 +3,9 @@
 PCAPParser::PCAPParser() {
     mrt.tv_sec = 0;
     mrt.tv_usec = 0;
-    to_fill.reserve(((SIZE_IPV4_HEADER_BITSTRING + SIZE_TCP_HEADER_BITSTRING +
-                      SIZE_UDP_HEADER_BITSTRING + SIZE_ICMP_HEADER_BITSTRING) *
-                     8) *
-                    4);
+    auto temp = SIZE_IPV4_HEADER_BITSTRING + SIZE_TCP_HEADER_BITSTRING +
+                SIZE_UDP_HEADER_BITSTRING + SIZE_ICMP_HEADER_BITSTRING;
+    to_fill.reserve(temp << 5);
 }
 
 void PCAPParser::process_file() {
@@ -51,10 +50,10 @@ void PCAPParser::format_and_write_header() {
     std::vector<std::string> header;
     header.push_back(config.index_map.find(config.output_index)->second);
     if (config.relative_timestamps == 1)
-        header.push_back("rts");
+        header.emplace_back("rts");
     if (config.absolute_timestamps == 1) {
-        header.push_back("tv_sec");
-        header.push_back("tv_usec");
+        header.emplace_back("tv_sec");
+        header.emplace_back("tv_usec");
     }
 
     fw->write_header(header);
@@ -119,7 +118,7 @@ pcap_t *PCAPParser::open_live_handle() {
 void PCAPParser::set_filter(pcap_t *handle, char *filter) {
     bpf_u_int32 net;
     bpf_u_int32 mask;
-    struct bpf_program fp;
+    struct bpf_program fp {};
     char errbuf[PCAP_ERRBUF_SIZE];
 
     net = 0;

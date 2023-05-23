@@ -2,11 +2,11 @@
 
 /* Required Functions */
 void *ICMPHeader::get_raw() {
-    return (void *)raw;
+    return (void *)this->raw;
 }
 
-void ICMPHeader::set_raw(void *raw) {
-    this->raw = (struct icmp *)raw;
+void ICMPHeader::set_raw(void *raw_data) {
+    this->raw = (struct icmp *)raw_data;
 }
 
 void ICMPHeader::print_header(FILE *out) {
