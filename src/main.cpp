@@ -48,7 +48,8 @@ static struct argp_option options[] = {
     {"relative_timestamps", 'R', nullptr,        0,
                                                     "include relative timestamp field"},
     {"verbose",             'V', nullptr,        0, "print human readable packets with nPrints"},
-    {nullptr}};
+    {nullptr}
+};
 
 const char *filter_help = R"""(
 ################################################################################
@@ -204,8 +205,7 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
         arguments->relative_timestamps = 1;
         break;
       case 'O':
-        arguments->output_index =
-            static_cast<uint8_t>(std::strtol(arg, nullptr, 10));
+        arguments->output_index = static_cast<uint8_t>(std::strtol(arg, nullptr, 10));
         if (arguments->output_index > 5 || arguments->output_index < 0) {
           fprintf(stderr, "invalid index configuration, exiting\n");
           exit(3);

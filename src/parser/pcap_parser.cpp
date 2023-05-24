@@ -30,6 +30,11 @@ void PCAPParser::packet_handler(u_char *user_data,
     packet = (uint8_t *) packet + LINUX_COOKED_HEADER_SIZE;
   }
   
+  auto ethernet_header = reinterpret_cast<header_eth_t>(packet);
+  if (ntohs(ethernet_header->ether_type) == ETHERTYPE_VLAN) {
+    packet = packet + sizeof(struct vlan_hdr);
+  }
+  
   sp = pcp->process_packet((void *) packet);
   if (sp == nullptr)
     return;

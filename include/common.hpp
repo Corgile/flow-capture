@@ -24,6 +24,7 @@ using header_udp_t = const struct udphdr *;
 using header_ipv6_t = const struct ip6_hdr *;
 using header_icmp_t = const struct icmphdr *;
 using header_radio_t = const struct radiotap_header *;
+using header_vlan_t = const struct vlan_hdr { uint32_t vlan_flag; } *;
 
 using packet_ip_t = const struct ip *;
 using packet_icmp_t = const struct icmp *;
