@@ -4,6 +4,7 @@
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 
+#include "common.hpp"
 #include "packet/header/packet_header.hpp"
 
 #define SIZE_ICMP_HEADER_BITSTRING 8
@@ -15,17 +16,22 @@
  */
 
 class ICMPHeader : public PacketHeader {
-   public:
-    /* Required Functions */
-    void *get_raw() override;
-    void set_raw(void *raw_data) override;
-    void print_header(FILE *out) override;
-    uint32_t header_len() override { return 8; };
-    void fill_bit_vec(std::vector<int8_t> &to_fill, int8_t fill_with) override;
-    void gen_bit_vec_header(std::vector<std::string> &to_fill) override;
+public:
+  /* Required Functions */
+  void *get_raw() override;
+  
+  void set_raw(void *raw_data) override;
+  
+  void print_header(FILE *out) override;
+  
+  uint32_t header_len() override { return 8; };
+  
+  void fill_bit_vec(std::vector<int8_t> &vec, int8_t bit) override;
+  
+  void gen_bit_header(std::vector<std::string> &vec) override;
 
-   private:
-    struct icmp *raw = nullptr;
+private:
+  struct icmp *raw = nullptr;
 };
 
 #endif

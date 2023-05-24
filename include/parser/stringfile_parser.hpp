@@ -1,5 +1,3 @@
-
-
 #ifndef FLOW_CAPTURE_STRINGFILE_PARSER_HPP
 #define FLOW_CAPTURE_STRINGFILE_PARSER_HPP
 
@@ -11,15 +9,19 @@
  */
 
 class StringFileParser : public FileParser {
-   public:
-    void process_file() override;
-    void format_and_write_header() override;
+public:
+  void process_file() override;
+  
+  void format_and_write_header() override;
 
-   private:
-    uint32_t num_cols;
-    static int hex_value(char hex_digit);
-    void format_custom_output(std::vector<std::string> &tokens);
-    static std::string hex_to_string(std::string input);
+private:
+  uint32_t num_cols;
+  
+  static int hex_value(char hex_digit);
+  
+  void format_custom_output(std::vector<std::string> &tokens);
+  
+  static std::string hex_to_string(std::string input);
 };
 
 #endif

@@ -1,10 +1,6 @@
 #ifndef FLOW_CAPTURE_FILE_WRITER_HPP
 #define FLOW_CAPTURE_FILE_WRITER_HPP
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -26,26 +22,32 @@
  */
 
 class FileWriter {
-   public:
-    void set_conf(const Config& c);
-    void write_header(std::vector<std::string> header);
-    void write_csv_bit_vec(std::vector<std::string> &v);
-    void write_bitstring_line(std::vector<std::string> &prefix,
-                              std::vector<int8_t> &bistring_vec);
+public:
+  void set_conf(const Config &c);
+  
+  void write_header(std::vector<std::string> header);
+  
+  void write_csv_bit_vec(std::vector<std::string> &v);
+  
+  void write_bitstring_line(std::vector<std::string> &prefix, std::vector<int8_t> &bit_vec);
+  
+  void write_fields_line(std::vector<std::string> &prefix, std::vector<std::string> &fields_vec);
+  
+  void write_line(std::string &line);
 
-    void write_fields_line(std::vector<std::string> &prefix,
-                           std::vector<std::string> &fields_vec);
-    void write_line(std::string &line);
-
-   private:
-    void recursive_mkdir(char *path);
-    FILE *fopen_mkdir(char *path);
-    Config config;
-    std::vector<uint32_t> keep_indexes;
-    std::vector<std::string> build_bitstring_header(
-        std::vector<std::string> header);
-    uint32_t payload_len;
-    FILE *outfile = nullptr;
+private:
+  void recursive_mkdir(char *path);
+  
+  FILE *fopen_mkdir(char *path);
+  
+  Config config;
+  std::vector<uint32_t> keep_indexes;
+  
+  std::vector<std::string>
+  build_bitstring_header(std::vector<std::string> header);
+  
+  uint32_t payload_len;
+  FILE *outfile = nullptr;
 };
 
 #endif

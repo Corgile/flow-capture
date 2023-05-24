@@ -14,14 +14,17 @@
  */
 
 class NprintParser : public FileParser {
-   public:
-    void process_file() override;
-    void format_and_write_header() override;
+public:
+  void process_file() override;
+  
+  void format_and_write_header() override;
 
-   private:
-    static std::string clean_line(std::string &line);
-    static uint8_t *transform_bitstring(std::string &bits);
-    std::tuple<void *, uint64_t> parse_packet(std::string &bits);
+private:
+  static std::string clean_line(std::string &line);
+  
+  static uint8_t *transform_bitstring(std::string &bits);
+  
+  std::tuple<void *, uint64_t> parse_packet(std::string &bits);
 };
 
 #endif

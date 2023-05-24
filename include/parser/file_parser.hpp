@@ -25,31 +25,40 @@
  */
 
 class FileParser {
-   public:
-    virtual ~FileParser()= default;
-    virtual void process_file() = 0;
-    virtual void format_and_write_header() = 0;
-    void print_stats();
-    void set_conf(Config c);
-    void set_fileWriter(FileWriter *writer);
-    SuperPacket *process_packet(void *pkt);
-    static void tokenize_line(const std::string& line, std::vector<std::string> &to_fill,
-                       char delimiter = ',');
+public:
+  virtual ~FileParser() = default;
+  
+  virtual void process_file() = 0;
+  
+  virtual void format_and_write_header() = 0;
+  
+  void print_stats();
+  
+  void set_conf(Config c);
+  
+  void set_fileWriter(FileWriter *writer);
+  
+  SuperPacket *process_packet(void *pkt);
+  
+  static void tokenize_line(const std::string &line,
+                            std::vector<std::string> &vec,
+                            char delimiter = ',');
 
-   protected:
-    Stats stat;
-    Config config;
-    FileWriter *fw;
-    uint32_t linktype;
-    void write_output(SuperPacket *sp);
-    // static void signal_handler(int signum);
+protected:
+  Stats stat;
+  Config config;
+  FileWriter *fw;
+  uint32_t linktype;
+  
+  void write_output(SuperPacket *sp);
+  // static void signal_handler(int signum);
+  
+  std::vector<std::string> custom_output;
+  std::vector<int8_t> bitstring_vec;
+  std::vector<std::string> fields_vec;
 
-    std::vector<std::string> custom_output;
-    std::vector<int8_t> bitstring_vec;
-    std::vector<std::string> fields_vec;
-
-   private:
-    std::string output_type;
+private:
+  std::string output_type;
 };
 
 #endif
